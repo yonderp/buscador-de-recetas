@@ -58,6 +58,21 @@ const search = document.getElementById("search"),
         });
     }
 
+    // fetch random meal from API
+    function getRandomMeal() {
+        //clear meals and heading
+        mealsEl.innerHTML = "";
+        resultHeading.innerHTML = "";
+
+        fetch(`https://www.themealdb.com/api/json/v1/1/random.php`)
+        .then(res => res.json())
+        .then (data => {
+            const meal = data.meals[0];
+
+            addMealToDOM(meal);
+        });
+    }
+
     //add meal to DOM
     function addMealToDOM(meal) {
         const ingredients = [];
@@ -84,7 +99,6 @@ const search = document.getElementById("search"),
                     <p>${meal.strInstructions}</p>
                     <h2>Ingredients</h2>
                     <ul>
-                        "hola a ver"
                         "${ingredients.map(ing => `<li>${ing}</li>`).join('')}"
                     </ul>
                 </div>
@@ -94,6 +108,7 @@ const search = document.getElementById("search"),
 
 // even listeners
 submit.addEventListener("submit", searchMeal);
+random.addEventListener("click", getRandomMeal);
 
 mealsEl.addEventListener("click", e => {
     const mealInfo = e.path.find(item => {
